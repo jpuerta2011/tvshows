@@ -1,0 +1,64 @@
+{
+  "format": 1,
+  "restore": {
+    "E:\\workspace\\Interviews\\ArquitecturaDelTalento\\TvShows\\TvShows.Infrastructure\\TvShows.Infrastructure.csproj": {}
+  },
+  "projects": {
+    "E:\\workspace\\Interviews\\ArquitecturaDelTalento\\TvShows\\TvShows.Infrastructure\\TvShows.Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\workspace\\Interviews\\ArquitecturaDelTalento\\TvShows\\TvShows.Infrastructure\\TvShows.Infrastructure.csproj",
+        "projectName": "TvShows.Infrastructure",
+        "projectPath": "E:\\workspace\\Interviews\\ArquitecturaDelTalento\\TvShows\\TvShows.Infrastructure\\TvShows.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Sebastian\\.nuget\\packages\\",
+        "outputPath": "E:\\workspace\\Interviews\\ArquitecturaDelTalento\\TvShows\\TvShows.Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\Sebastian\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.2"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.2": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.2": {
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[2.2.6, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.2.0, )",
+              "autoReferenced": true
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      }
+    }
+  }
+}
