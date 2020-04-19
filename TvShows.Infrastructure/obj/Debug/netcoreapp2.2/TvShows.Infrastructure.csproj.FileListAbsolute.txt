@@ -1,6 +1,0 @@
-E:\workspace\Interviews\ArquitecturaDelTalento\TvShows\TvShows.Infrastructure\bin\Debug\netcoreapp2.2\TvShows.Infrastructure.deps.json
-E:\workspace\Interviews\ArquitecturaDelTalento\TvShows\TvShows.Infrastructure\bin\Debug\netcoreapp2.2\TvShows.Infrastructure.dll
-E:\workspace\Interviews\ArquitecturaDelTalento\TvShows\TvShows.Infrastructure\obj\Debug\netcoreapp2.2\TvShows.Infrastructure.csprojAssemblyReference.cache
-E:\workspace\Interviews\ArquitecturaDelTalento\TvShows\TvShows.Infrastructure\obj\Debug\netcoreapp2.2\TvShows.Infrastructure.csproj.CoreCompileInputs.cache
-E:\workspace\Interviews\ArquitecturaDelTalento\TvShows\TvShows.Infrastructure\obj\Debug\netcoreapp2.2\TvShows.Infrastructure.AssemblyInfoInputs.cache
-E:\workspace\Interviews\ArquitecturaDelTalento\TvShows\TvShows.Infrastructure\obj\Debug\netcoreapp2.2\TvShows.Infrastructure.AssemblyInfo.cs
