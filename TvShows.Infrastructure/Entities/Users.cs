@@ -12,5 +12,7 @@ namespace TvShows.Infrastructure.Entities
         public string Name { get; set; }
         public string LastName { get; set; }
         public bool? State { get; set; }
+
+        public virtual Roles Role { get; set; }
     }
 }
