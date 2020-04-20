@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using TvShows.Services.Base;
 using TvShows.Services.Domain;
 

@@ -68,7 +68,7 @@ namespace TvShows.Web.Api
             services.AddDbContext<TvShowsDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             // Register the UnitOfWork
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            // Register the repostories
+            // Register the repositories
             RegisterRepositories(services);
             // Register the services
             RegisterServices(services);

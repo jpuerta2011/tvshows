@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TvShows.Common
+﻿namespace TvShows.Common
 {
     /// <summary>
     /// Main access to the Application configuration
