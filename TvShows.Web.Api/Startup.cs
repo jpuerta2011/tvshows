@@ -13,6 +13,7 @@ using TvShows.Infrastructure;
 using TvShows.Infrastructure.Entities;
 using TvShows.Infrastructure.Repositories;
 using TvShows.Services;
+using TvShows.Services.Application;
 using TvShows.Services.Domain;
 using TvShows.Web.Api.Middlewares;
 
@@ -86,6 +87,7 @@ namespace TvShows.Web.Api
         public void RegisterRepositories(IServiceCollection services)
         {
             #region Repositories
+
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IRolesRepository, RolesRepository>();
             #endregion
@@ -96,6 +98,12 @@ namespace TvShows.Web.Api
         public void RegisterServices(IServiceCollection services)
         {
             #region Domain services
+
+            services.AddScoped<IUsersService, UsersService>();
+            #endregion
+
+            #region Application services
+
             services.AddScoped<ISecurityService, SecurityService>();
             #endregion
 

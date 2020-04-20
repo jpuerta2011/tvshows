@@ -17,7 +17,7 @@ namespace TvShows.Web.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] Users user)
         {
-            var response = await Services.SecurityService.CreateUserAsync(user);
+            var response = await Services.UsersService.CreateUserAsync(user);
             if (!response.Success)
                 return BadRequest(response);
 
@@ -27,7 +27,7 @@ namespace TvShows.Web.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] Users user)
         {
-            var response = await Services.SecurityService.LoginAsync(user.UserName, user.Password);
+            var response = await Services.UsersService.LoginAsync(user.UserName, user.Password);
             if (!response.Success)
                 return BadRequest(response);
 

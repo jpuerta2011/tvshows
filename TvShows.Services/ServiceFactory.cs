@@ -6,7 +6,7 @@ namespace TvShows.Services
 {
     public interface IServiceFactory
     {
-        ISecurityService SecurityService { get; }
+        IUsersService UsersService { get; }
     }
 
     public class ServiceFactory : IServiceFactory
@@ -20,6 +20,6 @@ namespace TvShows.Services
 
         public T GetInstance<T>() where T : IService => (T)_provider.GetService(typeof(T));
 
-        public ISecurityService SecurityService => GetInstance<ISecurityService>();
+        public IUsersService UsersService => GetInstance<IUsersService>();
     }
 }
