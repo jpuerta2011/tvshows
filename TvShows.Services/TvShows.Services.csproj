@@ -10,8 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Base\" />
-    <Folder Include="Domain\" />
+    <ProjectReference Include="..\TvShows.Infrastructure\TvShows.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
