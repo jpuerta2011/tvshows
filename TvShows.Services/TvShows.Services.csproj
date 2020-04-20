@@ -10,8 +10,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Base\" />
     <Folder Include="Domain\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TvShows.Infrastructure\TvShows.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
