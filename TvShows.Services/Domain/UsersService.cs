@@ -19,8 +19,8 @@ namespace TvShows.Services.Domain
     {
         Task<ResponseModel<LoginResult>> LoginAsync(string userName, string password);
         Task<ResponseModel<long>> CreateUserAsync(Users userModel);
-        Task<ResponseModel<long>> UpdateUserAsync(Users userModel);
-        Task DeleteUserAsync(int userId);
+        Task<ResponseModel<long>> UpdateUserAsync(long userId, Users userModel);
+        Task DeleteUserAsync(long userId);
     }
 
     public class UsersService : Service, IUsersService
@@ -82,7 +82,7 @@ namespace TvShows.Services.Domain
             var response = new ResponseModel<long>();
 
             if (string.IsNullOrEmpty(userModel.UserName) || string.IsNullOrEmpty(userModel.Password) ||
-                string.IsNullOrEmpty(userModel.Name) || userModel.RoleId == 0)
+                string.IsNullOrEmpty(userModel.Name) || string.IsNullOrEmpty(userModel.LastName) || userModel.RoleId == 0)
             {
                 response.Messages.Add("UserName, Password, Role, Name and LastName fields are required");
                 response.Success = false;
@@ -99,6 +99,7 @@ namespace TvShows.Services.Domain
 
             user = Mapper.Map<Infrastructure.Entities.Users>(userModel);
             user.Password = _securityService.CreatePasswordSaltPlusHash(userModel.Password);
+            user.State = true;
 
             Repositories.UsersRepository.Save(user);
             await UnitOfWork.CommitAsync();
@@ -109,7 +110,7 @@ namespace TvShows.Services.Domain
             return response;
         }
 
-        public async Task<ResponseModel<long>> UpdateUserAsync(Users userModel)
+        public async Task<ResponseModel<long>> UpdateUserAsync(long userId, Users userModel)
         {
             var response = new ResponseModel<long>();
 
@@ -149,7 +150,7 @@ namespace TvShows.Services.Domain
             return response;
         }
 
-        public async Task DeleteUserAsync(int userId)
+        public async Task DeleteUserAsync(long userId)
         {
             var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserId == userId);
             if (user == null)

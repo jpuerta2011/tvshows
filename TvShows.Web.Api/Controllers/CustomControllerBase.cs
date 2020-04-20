@@ -21,7 +21,7 @@ namespace TvShows.Web.Api.Controllers
             get
             {
                 var identity = (ClaimsIdentity)User.Identity;
-                IEnumerable<Claim> claims = identity.Claims;
+                var claims = identity.Claims;
                 return claims;
             }
         }
@@ -32,12 +32,6 @@ namespace TvShows.Web.Api.Controllers
             return data;
         }
 
-        protected long CurrentUserId
-        {
-            get
-            {
-                return Convert.ToInt64(GetUserDataByType(ClaimTypes.NameIdentifier.ToString()));
-            }
-        }
+        protected long CurrentUserId => Convert.ToInt64(GetUserDataByType(ClaimTypes.NameIdentifier.ToString()));
     }
 }
