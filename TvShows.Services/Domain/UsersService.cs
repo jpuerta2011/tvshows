@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using TvShows.Services.Models;
@@ -17,10 +18,12 @@ namespace TvShows.Services.Domain
 {
     public interface IUsersService : IService
     {
+        Task<IEnumerable<Users>> GetUsers();
         Task<ResponseModel<LoginResult>> LoginAsync(string userName, string password);
         Task<ResponseModel<long>> CreateUserAsync(Users userModel);
         Task<ResponseModel<long>> UpdateUserAsync(long userId, Users userModel);
         Task DeleteUserAsync(long userId);
+        Task<Users> GetUser(long userId);
     }
 
     public class UsersService : Service, IUsersService
@@ -40,7 +43,7 @@ namespace TvShows.Services.Domain
         {
             var response = new ResponseModel<LoginResult>();
 
-            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserName == userName);
+            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserName == userName, new List<string> { "Role" });
             if (user == null)
             {
                 response.Messages.Add("Wrong credentials");
@@ -61,7 +64,7 @@ namespace TvShows.Services.Domain
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
                     new Claim(ClaimTypes.Name, user.UserName),
-                    new Claim(ClaimTypes.Role, user.RoleId.ToString())
+                    new Claim(ClaimTypes.Role, user.Role.RoleName)
                 }),
                 Expires = DateTime.UtcNow.AddHours(_appSettings.LifeTime),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -89,7 +92,7 @@ namespace TvShows.Services.Domain
                 return response;
             }
 
-            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserName == userModel.UserName);
+            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserName == userModel.UserName && u.State == true);
             if (user != null)
             {
                 response.Messages.Add("UserName already exist");
@@ -121,7 +124,7 @@ namespace TvShows.Services.Domain
                 return response;
             }
 
-            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserId == userModel.UserId);
+            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.State == true && u.UserId == userId);
             if (user == null)
             {
                 throw new NotFoundCustomException("User not found", "");
@@ -152,14 +155,32 @@ namespace TvShows.Services.Domain
 
         public async Task DeleteUserAsync(long userId)
         {
-            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserId == userId);
+            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.State == true && u.UserId == userId);
             if (user == null)
             {
                 throw new NotFoundCustomException("User not found", "");
             }
 
-            Repositories.UsersRepository.Remove(user);
+            user.State = false;
+
+            Repositories.UsersRepository.Update(user);
             await UnitOfWork.CommitAsync();
+        }
+
+        public async Task<IEnumerable<Users>> GetUsers()
+        {
+            var users = await Repositories.UsersRepository.ListAsync(u => u.State == true);
+            return Mapper.Map<IEnumerable<Users>>(users);
+        }
+
+        public async Task<Users> GetUser(long userId)
+        {
+            var user = await Repositories.UsersRepository.GetSingleAsync(u => u.UserId == userId && u.State == true);
+
+            if(user == null)
+                throw new NotFoundCustomException("User not found", "");
+
+            return Mapper.Map<Users>(user);
         }
     }
 }
