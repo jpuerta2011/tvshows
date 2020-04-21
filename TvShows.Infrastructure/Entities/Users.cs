@@ -1,4 +1,7 @@
-﻿namespace TvShows.Infrastructure.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace TvShows.Infrastructure.Entities
 {
     public partial class Users
     {

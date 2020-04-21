@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TvShows.Infrastructure.Entities;
+using TvShows.Infrastructure.Specifications;
+using TvShows.Common.Data;
 
 namespace TvShows.Infrastructure.Repositories.Base
 {
@@ -19,6 +21,11 @@ namespace TvShows.Infrastructure.Repositories.Base
         void Attach(T entity);
         void Remove(T entity);
         IQueryable<T> GetIQueryable(Expression<Func<T, bool>> expression, List<string> includes = null);
+        Task<T> GetSingleAsync(Specification<T> specification);
+        Task<IEnumerable<T>> ListAsync(Specification<T> specification);
+        Task<int> CountAsync(Specification<T> specification);
+
+
     }
 
     public class BaseRepository<TIdType, T> : IBaseRepository<TIdType, T>
@@ -63,6 +70,43 @@ namespace TvShows.Infrastructure.Repositories.Base
             return queryableResultWithIncludes.Where(expression);
         }
 
+        /// <summary>
+        ///     Gets the IQueryOver for the .
+        /// </summary>
+        /// <returns>An IQueryOver for the repository's entity.</returns>
+        public virtual IQueryable<T> GetIQueryable(Specification<T> specification)
+        {
+            // fetch a Queryable that includes all expression-based includes
+            var queryableResultWithIncludes = specification.Includes
+                .Aggregate(DbSet.AsQueryable(),
+                    (current, include) => current.Include(include));
+
+            // modify the IQueryable to include any string-based include statements
+            var secondaryResult = specification.IncludeStrings
+                .Aggregate(queryableResultWithIncludes,
+                    (current, include) => current.Include(include));
+
+            // return the query using the specification's criteria expression
+            return secondaryResult
+                .Where(specification.ToExpression());
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="specification"></param>
+        /// <returns></returns>
+        public IQueryable<T> GetPaginatedIQueryable(Specification<T> specification)
+        {
+            var queryable = GetIQueryable(specification)
+                .OrderBy(specification.Orders);
+
+            if (specification.ItemsPerPage >= 0)
+                queryable = queryable.Skip((specification.Page - 1) * specification.ItemsPerPage)
+                    .Take(specification.ItemsPerPage);
+
+            return queryable;
+        }
+
         /// <inheritdoc />
         /// <summary>
         ///     Gets an entity by its id.
@@ -99,12 +143,49 @@ namespace TvShows.Infrastructure.Repositories.Base
 
         /// <inheritdoc />
         /// <summary>
+        ///     Gets an entity by specification parameter
+        /// </summary>
+        /// <param name="specification"></param>
+        /// <returns></returns>
+        public async Task<T> GetSingleAsync(Specification<T> specification)
+        {
+            var queryable = GetIQueryable(specification)
+                .OrderBy(specification.Orders);
+
+            return await queryable.FirstOrDefaultAsync();
+        }
+
+        /// <inheritdoc />
+        /// <summary>
         ///     Gets all instances of the entity type by expression parameter
         /// </summary>
         /// <returns></returns>
         public async Task<IEnumerable<T>> ListAsync(Expression<Func<T, bool>> expression, List<string> includes = null)
         {
             return await GetIQueryable(expression, includes).ToListAsync();
+        }
+
+        /// <inheritdoc />
+        /// <summary>
+        ///     Gets all instances of the entity type by specification parameter
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<T>> ListAsync(Specification<T> specification)
+        {
+            var queryable = GetPaginatedIQueryable(specification);
+
+            return await queryable.ToListAsync();
+        }
+
+        /// <inheritdoc cref="" />
+        /// <summary>
+        ///     Gets the IQueryable list count by <paramref name="specification" />
+        /// </summary>
+        /// <param name="specification"></param>
+        /// <returns></returns>
+        public async Task<int> CountAsync(Specification<T> specification)
+        {
+            return await GetIQueryable(specification).CountAsync();
         }
 
         /// <inheritdoc />

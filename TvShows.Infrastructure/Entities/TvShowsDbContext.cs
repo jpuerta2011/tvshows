@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace TvShows.Infrastructure.Entities
 {
@@ -14,6 +16,7 @@ namespace TvShows.Infrastructure.Entities
         }
 
         public virtual DbSet<Roles> Roles { get; set; }
+        public virtual DbSet<Shows> Shows { get; set; }
         public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -41,6 +44,35 @@ namespace TvShows.Infrastructure.Entities
                 entity.Property(e => e.State)
                     .IsRequired()
                     .HasDefaultValueSql("((1))");
+            });
+
+            modelBuilder.Entity<Shows>(entity =>
+            {
+                entity.HasKey(e => e.ShowId);
+
+                entity.Property(e => e.ShowId).ValueGeneratedNever();
+
+                entity.Property(e => e.Channel)
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Genres)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Language)
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Name)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Thumbnail).IsRequired();
             });
 
             modelBuilder.Entity<Users>(entity =>

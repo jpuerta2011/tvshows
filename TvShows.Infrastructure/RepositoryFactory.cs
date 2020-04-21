@@ -10,6 +10,7 @@ namespace TvShows.Infrastructure
 
         IUsersRepository UsersRepository { get; }
         IRolesRepository RolesRepository { get; }
+        IShowsRepository ShowsRepository { get; }
     }
 
     public class RepositoryFactory : IRepositoryFactory
@@ -26,5 +27,7 @@ namespace TvShows.Infrastructure
         public IUsersRepository UsersRepository => GetInstance<IUsersRepository>();
 
         public IRolesRepository RolesRepository => GetInstance<IRolesRepository>();
+
+        public IShowsRepository ShowsRepository => GetInstance<IShowsRepository>();
     }
 }

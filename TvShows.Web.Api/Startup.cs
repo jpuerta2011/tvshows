@@ -90,6 +90,7 @@ namespace TvShows.Web.Api
 
             services.AddScoped<IUsersRepository, UsersRepository>();
             services.AddScoped<IRolesRepository, RolesRepository>();
+            services.AddScoped<IShowsRepository, ShowsRepository>();
             #endregion
 
             services.AddScoped<IRepositoryFactory, RepositoryFactory>();
@@ -100,6 +101,7 @@ namespace TvShows.Web.Api
             #region Domain services
 
             services.AddScoped<IUsersService, UsersService>();
+            services.AddScoped<IShowsService, ShowsService>();
             #endregion
 
             #region Application services
