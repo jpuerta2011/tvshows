@@ -40,8 +40,13 @@ namespace TvShows.Web.Api.Middlewares
 
             var response = context.Response;
             var statusCode = (int)HttpStatusCode.InternalServerError;
+#if DEBUG
+            var message = exception.Message;
+            var description = exception.StackTrace;
+#else
             var message = "Unexpected Error";
             var description = "UnexpectedError";
+#endif
 
             if (exception is BaseCustomException customException)
             {

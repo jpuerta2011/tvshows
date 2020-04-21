@@ -13,6 +13,7 @@ namespace TvShows.Web.Api.Automapper
                 .ForMember(d => d.Password, opt => opt.Ignore());
 
             CreateMap<Models.Roles, Entities.Roles>();
+            CreateMap<Models.Show, Entities.Shows>();
         }
     }
 }
